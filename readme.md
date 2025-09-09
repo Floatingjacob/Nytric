@@ -1,7 +1,7 @@
 ﻿
 ---
 
-# **Nytric Language Developer Guide
+# **Nytric Language Developer Guide**
 
 ---
 
