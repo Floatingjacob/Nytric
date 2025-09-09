@@ -1,0 +1,111 @@
+// demo.ncs - Full Nytric feature demo (parentheses-free)
+
+// ==============================
+// Variables
+// ==============================
+let x = 10
+let y = 25
+let greeting = "Hello, Nytric!"
+let name = "Nytric"
+
+print x
+print y
+say greeting
+
+// ==============================
+// Basic Math (prefix style)
+// ==============================
+print + x y       // 10 + 25 = 35
+print - y x       // 25 - 10 = 15
+print * x 3       // 10 * 3 = 30
+print / y 5       // 25 / 5 = 5
+print SQRT 16     // sqrt(16) = 4
+print RANDOM 100  // random 0–100
+
+// ==============================
+// Nested Math
+// ==============================
+print + 5 * 2 3   // 5 + (2*3) = 11
+print SQRT + 9 16 // sqrt(25) = 5
+
+// ==============================
+// String operations (prefix)
+// ==============================
+print REVERSE greeting   // "!cirtyN ,olleH"
+print LEN greeting       // 15
+say REVERSE greeting
+
+// String concatenation: use prefix + where one operand is a string
+say + "Hi " greeting     // "Hi Hello, Nytric!"
+
+// ==============================
+// Conditionals (blocks)
+// ==============================
+if - y x
+{
+    print "y is greater than x"
+}
+else
+{
+    print "x is greater than or equal to y"
+}
+
+// Example with string condition (non-empty string is truthy)
+if greeting
+{
+    print "greeting is non-empty"
+}
+
+// ==============================
+// Loops
+// ==============================
+let i = 1
+while - 5 i
+{
+    print i
+    let i = + i 1
+}
+
+// for loop: for var = start end { ... }
+for j = 1 5
+{
+    print j
+}
+
+// ==============================
+// Functions (declaration + call)
+// ==============================
+function add(a, b)
+{
+    return + a b
+}
+
+function square(n)
+{
+    return * n n
+}
+
+print add 7 8        // 15
+print square 6       // 36
+
+// Function using other features
+function greetPerson(p)
+{
+    return + "Hello, " p
+}
+
+say greetPerson name
+
+// ==============================
+// Combined / Nested features
+// ==============================
+print REVERSE + "Nytric" " is fun"    // reverse of "Nytric is fun"
+print SQRT square 9                   // sqrt(9*9) = 9
+print RANDOM + 10 20                  // random 0–30
+
+// Use function inside expression (PARENTHESIS-FREE)
+let total = + add 3 4 square 2       // add 3 4 = 7, square 2 = 4 -> 7 + 4 = 11
+print total
+
+
+// End of demo
