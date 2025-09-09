@@ -609,10 +609,12 @@ namespace NytricLanguage
                 interpreter.Evaluate(ast);
 
                 Console.WriteLine("--- Execution Finished ---");
+                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
+                Console.ReadKey();
             }
         }
     }
