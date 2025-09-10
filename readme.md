@@ -26,7 +26,7 @@ Nytric runs through a **C# interpreter**, and scripts use the `.ncs` extension.
 
 Variables are declared with `let`:
 
-```nytric
+```Nytric
 let x = 10
 let name = "Nytric"
 ```
@@ -35,7 +35,7 @@ let name = "Nytric"
 * Scope: Variables exist in the **current scope** (global or function-local)
 * Access variables anywhere in their scope:
 
-```nytric
+```Nytric
 let greeting = "Hello"
 say greeting  // prints: Hello
 ```
@@ -48,7 +48,7 @@ say greeting  // prints: Hello
 
 Prefix notation: `<operator> <operand1> <operand2>`
 
-```nytric
+```Nytric
 print + 3 4       // 7
 print - 10 5      // 5
 print * 2 3       // 6
@@ -57,7 +57,7 @@ print / 10 2      // 5
 
 * If operands are strings, only `+` is valid (concatenation):
 
-```nytric
+```Nytric
 say + "Hello, " name   // Hello, Nytric
 ```
 
@@ -72,7 +72,7 @@ say + "Hello, " name   // Hello, Nytric
 
 Examples:
 
-```nytric
+```Nytric
 print SQRT 16       // 4
 print RANDOM 100    // e.g., 42.37
 print REVERSE name  // "cirtyN"
@@ -86,7 +86,7 @@ print LEN name      // 6
 * Nytric uses **pure prefix notation**
 * Nested expressions are written without parentheses:
 
-```nytric
+```Nytric
 + add 3 4 square 2   // evaluates as add(3,4) + square(2)
 ```
 
@@ -98,7 +98,7 @@ print LEN name      // 6
 
 Syntax:
 
-```nytric
+```Nytric
 if <condition>
 {
     // statements
@@ -111,7 +111,7 @@ else
 
 Examples:
 
-```nytric
+```Nytric
 if - y x
 {
     print "y is greater than x"
@@ -137,7 +137,7 @@ if greeting
 
 ### **6.1 While Loop**
 
-```nytric
+```Nytric
 let i = 1
 while - 5 i
 {
@@ -148,7 +148,7 @@ while - 5 i
 
 ### **6.2 For Loop**
 
-```nytric
+```Nytric
 for j = 1 5
 {
     print j
@@ -161,7 +161,7 @@ for j = 1 5
 
 Declare functions:
 
-```nytric
+```Nytric
 function add(a, b)
 {
     return + a b
@@ -175,7 +175,7 @@ function square(n)
 
 Call functions:
 
-```nytric
+```Nytric
 print add 7 8      // 15
 print square 6     // 36
 
@@ -201,7 +201,7 @@ say + "Hi " add 3 4
 
 ## **9. Combining Features**
 
-```nytric
+```Nytric
 // Nested math and functions
 let total = + add 3 4 square 2
 print total  // 11
@@ -275,7 +275,7 @@ case "NEWOP":
 
 ## **12. Full Example Script**
 
-```nytric
+```Nytric
 let x = 10
 let y = 25
 let greeting = "Hello, Nytric!"
@@ -331,7 +331,11 @@ Hi 3
 
 ---
 
-### ✅ **13. Best Practices**
+## **13. Imports**
+
+You can use `IMP "yourImport.ncs"` to import other Nyric files into your code.
+
+### ✅ **Best Practices**
 
 * Keep expressions in **prefix notation**
 * Use `{ ... }` for multi-statement blocks

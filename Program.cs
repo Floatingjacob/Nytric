@@ -13,29 +13,37 @@ namespace NytricLanguage
         KEYWORD_IF, KEYWORD_ELSE, KEYWORD_WHILE,
         KEYWORD_FOR, KEYWORD_FUNCTION, KEYWORD_RETURN,
         OPERATOR_MINUS, OPERATOR_PLUS, OPERATOR_MULTIPLY, OPERATOR_DIVIDE,
-        OPERATOR_ASSIGN,
+        OPERATOR_ASSIGN, OPERATOR_EQUAL, OPERATOR_NOT_EQUAL, // Add these
         SYMBOL_COLON, SYMBOL_COMMA, SYMBOL_LPAREN, SYMBOL_RPAREN, SYMBOL_LBRACE, SYMBOL_RBRACE,
-        COMMENT, EOF, SQRT, RANDOM, REVERSE, LEN
+        COMMENT, EOF, SQRT, RANDOM, REVERSE, LEN, KEYWORD_IMP, KEYWORD_READ
     }
 
-    // Token
     public class Token { public TokenType Type; public string Value; public Token(TokenType t, string v) { Type = t; Value = v; } }
 
-    // Lexer
     public class Lexer
     {
-        private readonly string _source;
+        private string _source;
         private int _pos;
         private readonly List<Token> _tokens = new();
+        private readonly HashSet<string> _included;
+        private readonly string _baseDir;
 
-        public Lexer(string source) { _source = source; _pos = 0; }
+        public Lexer(string source, string baseDir = null, HashSet<string> included = null)
+        {
+            _source = source;
+            _pos = 0;
+            _baseDir = baseDir ?? Directory.GetCurrentDirectory();
+            _included = included ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        }
 
         public List<Token> Tokenize()
         {
-            // NOTE: keywords and special tokens MUST be placed BEFORE IDENTIFIER
             var patterns = new List<(TokenType, Regex)>
             {
                 (TokenType.COMMENT, new Regex(@"^//.*(?:\n|$)")),
+                (TokenType.OPERATOR_EQUAL, new Regex(@"^(==)")),
+                (TokenType.OPERATOR_NOT_EQUAL, new Regex(@"^(!=)")),
+                (TokenType.KEYWORD_IMP, new Regex(@"^(IMP\s+""([^""]+)"")")),
                 (TokenType.KEYWORD_LET, new Regex(@"^(let)")),
                 (TokenType.KEYWORD_PRINT, new Regex(@"^(print)")),
                 (TokenType.KEYWORD_SAY, new Regex(@"^(say)")),
@@ -62,6 +70,7 @@ namespace NytricLanguage
                 (TokenType.RANDOM, new Regex(@"^(RANDOM)")),
                 (TokenType.REVERSE, new Regex(@"^(REVERSE)")),
                 (TokenType.LEN, new Regex(@"^(LEN)")),
+                (TokenType.KEYWORD_READ, new Regex(@"^(read)")),
                 (TokenType.IDENTIFIER, new Regex(@"^([a-zA-Z_]\w*)"))
             };
 
@@ -76,13 +85,44 @@ namespace NytricLanguage
                     if (m.Success)
                     {
                         string v = m.Value;
-                        if (type != TokenType.COMMENT) _tokens.Add(new Token(type, v));
+
+                        if (type == TokenType.KEYWORD_IMP)
+                        {
+                            string fileName = m.Groups[2].Value;
+                            string fullPath = Path.GetFullPath(Path.Combine(_baseDir, fileName));
+
+                            if (_included.Contains(fullPath))
+                            {
+                                Console.WriteLine($"[Nytric] Skipping importing already imported file: \"{fileName}\".");
+                            }
+                            else if (File.Exists(fullPath))
+                            {
+                                _included.Add(fullPath);
+                                string injected = File.ReadAllText(fullPath) + "\n";
+                                string newBase = Path.GetDirectoryName(fullPath);
+                                var innerLexer = new Lexer(injected, newBase, _included);
+                                var innerTokens = innerLexer.Tokenize();
+                                innerTokens.RemoveAll(t => t.Type == TokenType.EOF);
+                                _tokens.AddRange(innerTokens);
+                            }
+                            else
+                            {
+                                throw new Exception($"IMP error: File '{fileName}' not found.");
+                            }
+                            _pos += v.Length;
+                            matched = true;
+                            break;
+                        }
+
+                        if (type != TokenType.COMMENT)
+                            _tokens.Add(new Token(type, v));
+
                         _pos += v.Length;
                         matched = true;
                         break;
                     }
                 }
-
+                
                 if (!matched)
                 {
                     var ws = Regex.Match(rem, @"^\s+");
@@ -96,7 +136,6 @@ namespace NytricLanguage
         }
     }
 
-    // Parser
     public class Parser
     {
         private readonly List<Token> _tokens;
@@ -119,24 +158,20 @@ namespace NytricLanguage
             {
                 if (_tokens[i].Type == TokenType.KEYWORD_FUNCTION)
                 {
-                    // function <name> ( params )
                     if (i + 1 < _tokens.Count && _tokens[i + 1].Type == TokenType.IDENTIFIER)
                     {
                         string name = _tokens[i + 1].Value;
                         i += 2;
-                        // expect LPAREN
                         if (i < _tokens.Count && _tokens[i].Type == TokenType.SYMBOL_LPAREN)
                         {
                             i++;
                             int count = 0;
-                            // count identifiers until RPAREN
                             while (i < _tokens.Count && _tokens[i].Type != TokenType.SYMBOL_RPAREN)
                             {
                                 if (_tokens[i].Type == TokenType.IDENTIFIER) { count++; i++; }
                                 else if (_tokens[i].Type == TokenType.SYMBOL_COMMA) i++;
-                                else i++; // be tolerant
+                                else i++;
                             }
-                            // now i at RPAREN or end
                             _functionParamCounts[name] = count;
                         }
                     }
@@ -198,6 +233,12 @@ namespace NytricLanguage
             return new Dictionary<string, object> { { "type", "PrintStatement" }, { "value", expr } };
         }
 
+        private Dictionary<string, object> ParseRead()
+        {
+            Consume(TokenType.KEYWORD_READ);
+            var read = ParseExpression();
+            return new Dictionary<string, object> { { "type", "ReadStatement" }, { "value", read } };
+        }
         // Parse if with optional else; both then/else can be single statement or { block }
         private Dictionary<string, object> ParseIf()
         {
@@ -281,6 +322,24 @@ namespace NytricLanguage
                 return new Dictionary<string, object> { { "type", "UnaryStatement" }, { "operator", op }, { "value", val } };
             }
 
+
+if (tok.Type == TokenType.OPERATOR_EQUAL || tok.Type == TokenType.OPERATOR_NOT_EQUAL)
+{
+    var op = Consume(tok.Type).Value;
+
+    // Force exactly two arguments for comparison
+    var left = ParseExpression();
+    var right = ParseExpression();
+
+    return new Dictionary<string, object>
+    {
+        { "type", "ComparisonStatement" },
+        { "operator", op },
+        { "left", left },
+        { "right", right }
+    };
+}
+
             // Math operators (binary)
             if (tok.Type == TokenType.OPERATOR_PLUS || tok.Type == TokenType.OPERATOR_MINUS || tok.Type == TokenType.OPERATOR_MULTIPLY || tok.Type == TokenType.OPERATOR_DIVIDE)
             {
@@ -318,6 +377,13 @@ namespace NytricLanguage
                 var raw = Consume(TokenType.STRING_LITERAL).Value;
                 var content = raw.Substring(1, raw.Length - 2).Replace("\\\"", "\"").Replace("\\'", "'").Replace("\\\\", "\\");
                 return new Dictionary<string, object> { { "type", "Literal" }, { "value", content } };
+            }
+
+            // Reading a line
+            if (tok.Type == TokenType.KEYWORD_READ)
+            {
+                var val = Consume(TokenType.KEYWORD_READ).Value;
+                return new Dictionary<string, object> { { "type", "Read" }, { "value", val } };
             }
 
             throw new Exception($"Parsing error: Unexpected token {tok.Type}");
@@ -391,7 +457,7 @@ namespace NytricLanguage
                 case "PrintStatement":
                     {
                         var value = EvaluateExpression((Dictionary<string, object>)node["value"]);
-                        Console.WriteLine(value);
+                       if (value != null) Console.WriteLine(value);
                         return null;
                     }
                 case "IfStatement":
@@ -471,6 +537,8 @@ namespace NytricLanguage
         private object EvaluateExpression(Dictionary<string, object> expr)
         {
             var type = expr["type"].ToString();
+            // Inside EvaluateExpression method
+
             switch (type)
             {
                 case "Literal":
@@ -483,11 +551,43 @@ namespace NytricLanguage
                     return EvaluateUnary(expr);
                 case "FunctionCall":
                     return EvaluateFunctionCall(expr);
+                case "Read":
+                    return Console.ReadLine();
+                case "ComparisonStatement":
+                    return EvaluateComparison(expr); // Add this
                 default:
                     throw new Exception($"Runtime error: Unknown expression type '{type}'");
             }
         }
 
+        private object EvaluateComparison(Dictionary<string, object> node)
+        {
+            var leftObj = EvaluateExpression((Dictionary<string, object>)node["left"]);
+            var rightObj = EvaluateExpression((Dictionary<string, object>)node["right"]);
+            var op = node["operator"].ToString();
+            if (leftObj is double leftNum && rightObj is double rightNum)
+            {
+                return op switch
+                {
+                    "==" => leftNum == rightNum,
+                    "!=" => leftNum != rightNum,
+                    _ => throw new Exception($"Runtime error: Unknown comparison operator '{op}'")
+                };
+            }
+            else
+            {
+                string leftStr = leftObj?.ToString() ?? "";
+                string rightStr = rightObj?.ToString() ?? "";
+
+                return op switch
+                {
+                    "==" => leftStr == rightStr,
+                    "!=" => leftStr != rightStr,
+                    _ => throw new Exception($"Runtime error: Unknown comparison operator '{op}'")
+                };
+            }
+
+        }
         private object EvaluateFunctionCall(Dictionary<string, object> node)
         {
             var name = node["name"].ToString();
@@ -522,7 +622,7 @@ namespace NytricLanguage
 
             // Pop function scope
             _scopes.RemoveAt(_scopes.Count - 1);
-            return returnVal ?? 0.0; // default return 0.0 if none
+            return returnVal; // default return 0.0 if none
         }
 
         private object EvaluateUnary(Dictionary<string, object> node)
@@ -565,7 +665,7 @@ namespace NytricLanguage
                 "+" => left + right,
                 "-" => left - right,
                 "*" => left * right,
-                "/" => right != 0 ? left / right : throw new Exception("Runtime error: Division by zero"),
+                "/" => right != 0 ? left / right : throw new Exception("Division by zero causes problems. Don't do that again."),
                 _ => throw new Exception($"Runtime error: Unknown operator '{op}'")
             };
         }
@@ -573,10 +673,12 @@ namespace NytricLanguage
         private static bool IsTruthy(object v)
         {
             if (v == null) return false;
-            if (v is double d) return Math.Abs(d) > 1e-12; // non-zero is true
+            if (v is bool b) return b;                 // <-- add this
+            if (v is double d) return Math.Abs(d) > 1e-12;
             if (v is string s) return s.Length > 0;
             return true;
         }
+
 
         private static string ReverseString(string s) { var arr = s.ToCharArray(); Array.Reverse(arr); return new string(arr); }
 
@@ -591,31 +693,98 @@ namespace NytricLanguage
     // Main program
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            try
+            string source = "";
+            bool executed = false;
+            bool multiline = false;
+            Console.WriteLine(welcome);
+            Console.ForegroundColor = ConsoleColor.White;
+            while (true)
             {
-                var files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.ncs");
-                if (files.Length == 0) { Console.WriteLine("No .ncs file found in the current directory."); return; }
-                var source = File.ReadAllText(files[0]);
+                
+                try
+                {
 
-                var lexer = new Lexer(source);
-                var tokens = lexer.Tokenize();
+                    if (args.Length == 1 && !executed) // If there is 1 command line argument, assume it is a file and interpret it as .ncs
+                    {
+                        source = File.ReadAllText(args[0]);
+                        executed = true; // Makes sure Nytric doesnt spam execute the file over and over.
+                    }
+                    else
+                    {
+                        
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Nytric> "); // Pretty much an interactive shell that ONLY knows Nytric
 
-                var parser = new Parser(tokens);
-                var ast = parser.Parse();
+                        Console.ForegroundColor = ConsoleColor.Yellow; // Makes the input yellow. (ooh, fancy...)
+                        source = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        
+                        switch (source.ToUpper())
+                        {
+                            
+                            case "CLEAR" or "CLS":
+                                Console.Clear();
+                                source = "";
+                                break;
+                            case "MULTILINE" or "ML":
+                                File.WriteAllText(".multiline", ""); // Makes sure the file is empty
+                                multiline = true;
+                                while (multiline)
+                                {
+                                    string input;
+                                    string text;
+                                    input = Console.ReadLine();
+                                    if (input.ToUpper() == "ENDMULTILINE" || input.ToUpper() == "EML") break;
+                                    else File.WriteAllText(".multiline", $"{File.ReadAllText(".multiline")}\n{input}"); // Writes a new line of code to the temporary file
+                                }
+                                source = File.ReadAllText(".multiline"); // Runs the temporary file aftet multiline is done.
+                                break;
+                            case "EXIT" or "QUIT":
+                                Environment.Exit(0); // Exits the program (duh)
+                                break;
+                            case "HELP" or "?":
+                                Console.WriteLine(help);
+                                source = "";
+                                break;
+                        }
+                        // If you type 'ex' or 'execute' or 'run', assume the second argument is a file path and interpret it as ncs
+                        if (source.ToUpper().Split(' ', 2)[0] == "EX" || source.ToUpper().Split(' ', 2)[0] == "EXECUTE" || source.ToUpper().Split(' ', 2)[0] == "RUN")
+                        {
+                            source = File.ReadAllText(source.Split(' ', 2)[1]);
+                            
+                        }
+                    }
+                    var lexer = new Lexer(source);
+                    var tokens = lexer.Tokenize();
 
-                var interpreter = new Interpreter();
-                interpreter.Evaluate(ast);
+                    var parser = new Parser(tokens);
+                    var ast = parser.Parse();
 
-                Console.WriteLine("--- Execution Finished ---");
-                Console.ReadKey();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                Console.ReadKey();
+                    var interpreter = new Interpreter();
+                    interpreter.Evaluate(ast);
+                    
+                    //Console.WriteLine("--- Execution Finished ---");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
             }
         }
+        const string welcome = @"Welcome to the Nytric shell!
+Type 'Exit' or 'Quit' to leave.
+Type 'Help' or '?' to get help.
+";
+
+        const string help = @"
+HELP - Spits out this menu.
+CLEAR, CLS - Clears the screen.
+MULTILINE, ML - Enters MultiLine mode, allowing you to type multiple lines of code before executing.
+ENDMULTILINE, EML - Exits MultiLine mode, executing whatever you entered while in MultiLine mode. 
+    NOTE: ENDMULTILINE/ EML can only be executed while in MULTILINE/ML mode.
+EXIT, QUIT - Closes the shell and exits.
+";
     }
 }

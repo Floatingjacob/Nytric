@@ -1,0 +1,3 @@
+IMP "fileWithImports.ncs"
+
+countTo 100000
