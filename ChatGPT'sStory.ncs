@@ -1,0 +1,268 @@
+function begin(){
+    wipe
+    print "You wake up in a field of vending machines stretching endlessly."
+    print "A single crow watches you from atop a Pepsi machine."
+    print "What do you do?"
+    print "1. Put a coin into the nearest machine."
+    print "2. Ask the crow for advice."
+    print "3. Attempt to eat the machine."
+    let input = read
+
+    if == input "1" {coinIn}
+    else {if == input "2" {askCrow}
+    else {if == input "3" {eatMachine}}
+    }
+    
+}
+
+function coinIn(){
+    wipe
+    print "You insert a coin. The machine whirs, shakes, and spits out..."
+    print "A smaller vending machine."
+    pause 1500
+    print "It hums softly in your hands. The crow stares with envy."
+    print ""
+    print "What do you do?"
+    print "1. Open the mini machine."
+    print "2. Give it to the crow."
+    print "3. Eat the mini machine."
+    let input = read
+
+    if == input "1" {openMini}
+    else {if == input "2" {giveCrow}
+    else {if == input "3" {eatMini}}
+    }
+    
+}
+
+function askCrow(){
+    wipe
+    print "The crow clears its throat. 'Finally, someone asks ME,' it says."
+    print "'Vending machines are gateways to alternate dimensions,' it caws."
+    pause 1500
+    print "Then it explodes into a shower of coupons."
+    print ""
+    print "You gather the coupons. They all say:"
+    print "'VALID FOR ONE FREE SOUL.'"
+    pause 2000
+    print "What do you do?"
+    print "1. Redeem a coupon in a machine."
+    print "2. Keep the coupons for later."
+    print "3. Eat the coupons."
+    let input = read
+
+    if == input "1" {redeemSoul}
+    else {if == input "2" {keepCoupons}
+    else {if == input "3" {eatCoupons}}
+    }
+    
+}
+
+function eatMachine(){
+    wipe
+    print "You bite into the vending machine. It tastes like aluminum and despair."
+    pause 1500
+    print "Suddenly, a Snickers bar falls out. You are no longer hungry."
+    pause 1000
+    print "But the machine growls. You’ve awakened it."
+    print ""
+    print "What do you do?"
+    print "1. Apologize."
+    print "2. Run away."
+    print "3. Offer the Snickers back."
+    let input = read
+
+    if == input "1" {apologize}
+    else {if == input "2" {runAway}
+    else {if == input "3" {offerSnickers}}
+    }
+    
+}
+
+// ------------------------
+// Coin branch
+// ------------------------
+
+function openMini(){
+    wipe
+    print "You pry open the mini vending machine."
+    print "Inside is an even smaller vending machine. It squeaks like a mouse."
+    pause 1500
+    print "You now hold the smallest vending machine in existence."
+    print "It feels... important."
+    interaction "true"
+    convergence
+}
+
+function giveCrow(){
+    wipe
+    print "You hand the mini machine to the crow. The crow bows solemnly."
+    print "It flies away, carrying the machine, leaving a single feather behind."
+    pause 2000
+    print "The feather glows with strange energy."
+    interaction "true"
+    convergence
+}
+
+function eatMini(){
+    wipe
+    print "You devour the mini machine in one bite."
+    print "It tastes like battery acid and hope."
+    pause 1500
+    print "You feel it vibrating in your stomach. Something inside you changes."
+    interaction "true"
+    convergence
+}
+
+// ------------------------
+// Crow branch
+// ------------------------
+
+function redeemSoul(){
+    wipe
+    print "You redeem a coupon. The machine whirs..."
+    pause 2000
+    print "It dispenses a glowing orb labeled 'SOUL (USED).' "
+    interaction "true"
+    convergence
+}
+
+function keepCoupons(){
+    wipe
+    print "You stuff the coupons into your pocket."
+    print "They pulse faintly against your leg."
+    pause 1500
+    interaction "true"
+    convergence
+}
+
+function eatCoupons(){
+    wipe
+    print "You chew up the coupons. They taste like printer ink and sadness."
+    pause 1500
+    print "Your tongue glows briefly, then goes numb."
+    interaction "true"
+    convergence
+}
+
+// ------------------------
+// Machine branch
+// ------------------------
+
+function apologize(){
+    wipe
+    print "You bow to the vending machine and apologize."
+    print "It accepts your apology and spits out a soda can labeled 'FORGIVENESS.'"
+    interaction "true"
+    convergence
+}
+
+function runAway(){
+    wipe
+    print "You sprint through the endless field of machines."
+    print "But no matter how far you run, the rows continue."
+    pause 1500
+    print "At last, you collapse... only to find another machine waiting for you."
+    interaction "true"
+    convergence
+}
+
+function offerSnickers(){
+    wipe
+    print "You offer the Snickers back. The machine purrs happily."
+    print "The Snickers melts into your hand, forming a strange key."
+    interaction "true"
+    convergence
+}
+
+// ------------------------
+// Convergence point
+// ------------------------
+
+function convergence(){
+    wipe
+    print "No matter your choice, the field of machines begins to rumble."
+    print "The sky cracks open, revealing a colossal vending machine descending."
+    pause 2000
+    print "It speaks in a booming voice:"
+    print "'ALL CHOICES LEAD TO ME.'"
+    pause 2000
+    print "The crow returns, perching on the giant machine’s shoulder."
+    print "'The cycle repeats,' it whispers."
+    pause 2000
+    print "What do you do?"
+    print "1. Submit to the machine overlord."
+    print "2. Rebel and attack it."
+    print "3. Offer yourself as a sacrifice."
+    let input = read
+
+    if == input "1" {submit}
+    else {if == input "2" {rebel}
+    else {if == input "3" {sacrifice}}
+    }
+    
+}
+
+function submit(){
+    wipe
+    print "You kneel before the vending colossus."
+    print "It opens, dispensing an entire new reality."
+    pause 2000
+    print "You are swallowed by it, reborn as the next crow."
+    interaction "true"
+    endGame
+}
+
+function rebel(){
+    wipe
+    print "You hurl yourself at the machine, punching, kicking, biting wires."
+    print "It laughs. The crow laughs. Everyone laughs."
+    pause 2000
+    print "Then, to your surprise, the machine falls."
+    print "But in its place, ten thousand smaller machines rise up."
+    interaction "true"
+    endGame
+}
+
+function sacrifice(){
+    wipe
+    print "You step forward willingly, offering yourself."
+    pause 2000
+    print "The giant machine consumes you whole."
+    print "The crow nods approvingly."
+    pause 1500
+    print "Your body becomes the new coin that powers the machines."
+    interaction "true"
+    endGame
+}
+
+// ------------------------
+// Ending
+// ------------------------
+
+function endGame(){
+    wipe
+    print "The vending machines fade. The crow spreads its wings."
+    print "It says, 'Another cycle complete. Another fool consumed.'"
+    pause 2000
+    print "Then darkness."
+    pause 2000
+    print "GAME OVER."
+    print ""
+    print "Play again? (y/n)"
+    let input = read
+
+    if == input "y" {begin}
+    else {wipe print "Thanks for playing."}
+}
+
+function interaction(continue){
+	if == continue "true" {print "Enter to continue..." read}
+	else {
+    print "Enter to return..."
+			read
+			begin
+    }
+}
+
+begin

@@ -331,9 +331,11 @@ Hi 3
 
 ---
 
-## **13. Imports**
+## **13. Misc.**
 
 You can use `IMP "yourImport.ncs"` to import other Nyric files into your code.
+
+You can use `pause milliseconds` where `milliseconds` is your pause time in milliseconds.
 
 ### ✅ **Best Practices**
 

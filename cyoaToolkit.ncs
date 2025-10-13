@@ -1,0 +1,8 @@
+function interaction(end){
+	if == end "true" {
+			print "Enter to return..."
+			read
+			begin
+	}
+	else {print "Enter to continue..." read}
+}

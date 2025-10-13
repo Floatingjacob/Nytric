@@ -1,0 +1,274 @@
+IMP "cyoatoolkit.ncs"
+let sack = ""
+let torch = ""
+let savestone = ""
+let sword = ""
+let shield = ""
+let canteen = ""
+let flower = ""
+let rumorProgression = ""
+let opt = 1
+let gold = 60
+let menu = ""
+function begin(){
+	wipe
+	print "Your name is Gerauld."
+	print "You are an idiot."
+	pause 2000
+	print "Go kill a dragon."
+	interaction ""
+	wipe
+	house
+}
+
+function house(){
+	wipe
+	let opt = 1
+	let menu = ""
+	print "You are in your house."
+	if != "taken" torch{
+		print "There is a torch."
+		let menu = ++ menu opt ". Take torch
+"
+		let torch = opt
+		let opt = + opt 1
+	}
+	if != "taken" sword{
+		print "There is a sword."
+		let menu = ++ menu opt ". Take sword
+"
+		let sword = opt
+		let opt = + opt 1
+	}
+	if != "taken" shield{
+		print "There is a shield."
+		let menu = ++ menu opt ". Take shield
+"
+		let shield = opt
+		let opt = + opt 1
+	}
+	if != "taken" canteen{
+		print "There is a canteen."
+		let menu = ++ menu opt ". Take canteen
+"
+		let canteen = opt
+		let opt = + opt 1
+	}
+
+	
+	let menu = ++ menu opt ". Go outside
+"
+	let outside = opt
+	let opt = + opt 1
+
+	let menu = ++ menu opt ". Sleep
+"
+	let sleep = opt
+	let opt = + opt 1
+
+	let sackID = opt
+	let menu = ++ menu sackID ". Open sack"
+
+    print menu
+	let input = read
+	if == input torch {
+		print "You took the torch."
+		let torch = "taken"
+		interaction ""
+		house
+	}
+	else {if == input sword {
+		print "You took the sword."
+		let sword = "taken"
+		interaction ""
+		house
+	}
+	else {if == input shield {
+		print "You took the shield."
+		let shield = "taken"
+		interaction ""
+		house
+	}
+	else {if == input canteen {
+		print "You took the canteen."
+		let canteen = "taken"
+		interaction ""
+		house
+	}
+	else {if == input outside {Outside}
+	else {if == input sleep {
+		print "You fell asleep."
+		
+		interaction ""
+		house
+	}
+	
+	else {if == input sackID{
+		wipe
+		showSack
+		house
+	}
+	else {house}
+	}
+	}
+	}
+	}
+	}
+	}
+}
+
+function showSack(){
+	if == torch "taken"{
+		let sack = + "a torch
+" sack
+	}
+	if == canteen "taken"{
+		let sack = + "an endless canteen
+" sack
+	}
+	if == shield "taken"{
+		let sack = + "a shield
+" sack
+	}
+	if == sword "taken"{
+		let sack = + "a sword
+" sack
+	}
+		if == flower "taken"{
+		let sack = + "a flower
+" sack
+	}
+		if == savestone "taken"{
+		let sack = + "a SaveStone
+" sack
+	}
+	let sack = + gold sack
+	print "Your sack contains"
+	sack
+	interaction ""
+}
+
+function Outside(){
+	wipe
+	print "You are outside your house."
+	print "There is a winding pathway leading to the local dragon's lair."
+	print "1. Pick a flower"
+	print "2. Go to the dragon's lair"
+	print "3. Go to the crazy merchant"
+	print "4. Open sack"
+
+	let input = read
+	if == input "1"{	
+		let flower = "taken"
+		print "You picked a flower... congrats."
+		interaction ""
+		Outside
+	}
+	if == input "2"{dragonLair}
+	if == input "3"{crazyMerchant}
+	if == input "4"{
+		showSack
+		Outside
+	}
+}
+
+function crazyMerchant(){
+	wipe
+	print "You are staring at the Crazy Merchant staring at you."
+	print "Eventually, the Merchant says 'Need something?'"
+	print "1. Buy something"
+	print "2. Sell something"
+	print "3. Rumors"
+
+	let input = read
+	if == input "1"{buy}
+}
+
+function dragonLair(){
+
+}
+
+function buy(){
+	wipe
+	print ++ "You have " gold " gold"
+	print "What do you want to buy?"
+	print "1. Sword (30 Gold)"
+	print "2. Endless canteen (15 Gold)"
+	print "3. Torch (1 Gold)"
+	print "4. SaveStone (60 Gold)"
+	let input = read
+	if == input "1"{
+		if == sword "taken"{
+			print "You already have a sword."
+			interaction ""
+			buy
+		}
+		else{
+			if - gold 29{
+				let sword = "taken"
+				let gold = - gold 30
+				print "Bought sword."
+				interaction ""
+				buy
+			}
+		}
+	}
+	else{ 
+		if == input "2"{
+			if == canteen "taken"{
+				print "You already have an endless canteen."
+				interaction ""
+				buy
+			}
+			else{
+			if - gold 14{
+				let canteen = "taken"
+				let gold = - gold 15
+				print "Bought an endless canteen."
+				interaction ""
+				buy
+			}
+		}
+		}
+		else{ 
+			if == input "3"{
+			if == torch "taken"{
+				print "You already have a torch."
+				interaction ""
+				buy
+			}
+			else{
+			if - gold 0{
+				let torch = "taken"
+				let gold = - gold 1
+				print "Bought a torch."
+				interaction ""
+				buy
+			}
+			}
+		}
+		else{
+		if == input "4"{
+					if == savestone "taken"{
+						print "You already have a save stone."
+						interaction ""
+						buy
+					}
+					else{
+					if - gold 59{
+						let savestone = "taken"
+						let gold = - gold 60
+						print "Bought a save stone."
+						interaction ""
+						buy
+					}
+			else{buy}
+		}
+		}
+		}
+	}
+	}
+
+}
+
+begin

@@ -1,3 +1,142 @@
-IMP "fileWithImports.ncs"
+IMP "cyoaToolkit.ncs"
 
-countTo 100000
+function begin(){
+	wipe
+	print "You come across a loose stone in a wall. What do you do?"
+	print "1. Pull it out of the wall"
+	print "2. Ignore it and continue walking."
+	print "3. Show it to a stranger on the street."
+	print ""
+	let input = read
+
+		if == input "1" {pullOut}
+			else {if == input "2" {
+				wipe
+				print "Congrats, you showed self-control." 
+				pause 1500 
+				print "What did you expect me to do? Give you a hundred bucks?"
+				interaction "true"
+			}
+				else {if == input "3" {showToStranger}
+			}
+		}	
+}
+
+function pullOut(){
+	wipe
+	print "You pulled the loose stone out of the wall. What do you do?"
+	print "1. Lick it."
+	print "2. Lob it at a stranger."
+	print "3. Pet it and put it back."
+	let input = read
+	
+	if == input "1" {
+		wipe
+		print "You licked the stone, which had the last colony of the Boubonic Plague's bacteria." 
+		print "You die on the spot, unleashing a continent-destroying virus onto the world." 
+		print "Millions die, all because you licked a loose stone from a wall."
+	}
+	else {if == input "2"{
+		wipe
+		print "You lob the stone at a stranger."
+		pause 1000
+		print "They die."
+		}
+	else {if == input "3"{
+		wipe
+		print "You pet the stone and put it back into it's home."
+		print "You gained the stone's affection, making it hop back out of it's home and perch on your shoulder."
+		interaction ""
+		stonePetted
+	}}
+	}
+	interaction "true"
+}
+
+function showToStranger(){
+	wipe
+	print "You show the stone to a stranger, who just-so-happens to be a geologist."
+	print "After giving the stone a thorough examination (he licked it), the stranger informs you that the" 
+	print "stone is actually a rare time capsule from the 1300s."
+	print "The stranger then jams the stone into his coat pocket, and takes off running." 
+	print "He makes it about five yards before falling to the ground dead, exhibiting plague-like symptoms."
+	pause 2000
+	interaction ""
+	wipe
+	print "You stare at the stranger's body for about three seconds before walking over" 
+	print "to it, taking the stone from the body, and putting the stone back into the wall."
+	pause 2000
+	interaction ""
+	wipe
+	print "You wait for your next victim..."
+	interaction "true"
+	begin
+}
+
+function stonePetted(){
+	wipe
+	print "The stone purrs happily..."
+	pause 2000
+	print "'Go to the pond...' the stone whispers into your ear."
+	print "What do you do?"
+	print "1. go to the pond."
+	print "2. say 'hell nah' and lob the stone at a stranger."
+	print "3. pet the stone."
+	let input = read
+	if == input "1"{wentToPond}
+	else {if == input "2" {hellNah} else { if == input 3 {stonePettedAgain}}}
+}
+
+function wentToPond(){
+	wipe
+	print "You walked to the pond."
+	print "The stone jumps off your shoulder and somehow, runs without legs, to the pond's edge and jumps in."
+	pause 1500
+	print "You hear the stone screaming underwater as it drowns."
+	pause 3000
+	print "The stone drowned. You dont know why you listened to a suicidal stone from the side of a wall."
+	print "You carry on with your life, knowing you aided a stone in killing itself."
+	interaction ""
+	wipe
+	print "Someone lobbed a stone at your head, causing you to die."
+	print "Just before dying, you see yourself staring at you, looking as if he just lobbed a stone at you."
+	pause 1000
+	print "Anyways... You're dead now... cus you threw a stone at yourself"
+	print "THE END... because you're dead... Remember?"
+	pause 1500
+	interaction "true"
+
+}
+
+function hellNah(){
+	wipe
+	print "You tell the stone 'hell nah' and lob it at a nearby stranger's head"
+	pause 1500
+	print "They die."
+	print "You rush over to the person you just killed, and recognize them as yourself."
+	interaction ""
+	wipe
+	print "You pluck the stone out of dead-you's mouth (lucky throw), and shatter it on the ground."
+	print "As the stone dies, you hear it whisper 'M-Malachai. i- Im Malachai the Malachite...'"
+	print "The poor little critter finally wheezes it's last breath, and then lies stone-still."
+	print "The end..."
+	interaction "true"
+}
+
+function stonePettedAgain(){
+	wipe
+	print "You pet the stone."
+	print "The stone purrs louder..."
+	interaction ""
+	wipe
+	print "The stone jumps off your shoulder and somehow, runs without legs to the nearest stranger."
+	print "It then climbs up to the stranger's mouth, and smashed it's way inside."
+	print "The stranger chokes to death, staring at a lightpost accusingly."
+	interaction ""
+	wipe
+	print "The stone then bursts out of the now-dead stranger's mouth, and perches back on your shoulder"
+	pause 3000
+	"The stone purrs violently..."
+	interaction "true"
+}
+begin

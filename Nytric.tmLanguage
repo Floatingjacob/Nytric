@@ -1,0 +1,46 @@
+{
+  "scopeName": "source.ncs",
+  "fileTypes": [
+    "ncs"
+  ],
+  "foldingStartMarker": "\\{",
+  "foldingStopMarker": "\\}",
+  "name": "Nytric",
+  "patterns": [
+    {
+      "name": "comment.line.double-slash.ncs",
+      "match": "//.*$"
+    },
+    {
+      "name": "keyword.control.ncs",
+      "match": "\\b(if|else|while|for|return|IMP|pause)\\b"
+    },
+    {
+      "name": "storage.type.function.ncs",
+      "match": "\\b(function|let)\\b"
+    },
+    {
+      "name": "entity.name.function.ncs",
+      "match": "\\b(add|square|say|print)\\b"
+    },
+    {
+      "name": "keyword.operator.ncs",
+      "match": "(\\+|-|\\*|/|SQRT|RANDOM|REVERSE|LEN|\\=)"
+    },
+    {
+      "name": "constant.numeric.ncs",
+      "match": "\\b-?\\d+(\\.\\d+)?\\b"
+    },
+    {
+      "name": "string.quoted.double.ncs",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.ncs",
+          "match": "\\\\."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+IMP "cyoaToolkit.ncs"
+
+function begin(){
+	wipe
+	print "You come across a loaf of bread, atop a toilet, in the middle of the road."
+	print "What do you do?"
+	print "1. Eat the bread and sit on the toilet"
+	print "2. Use the toilet (in the middle of the road)."
+	print "3. Flush the loaf of bread down the toilet."
+
+	let input = read
+	if == input "1"{eatAndSit}
+	else {if == input "2" {takeADump}
+	else {if == input "3" {flushLoaf}}
+	}
+}
+
+function eatAndSit(){
+	wipe
+	print "You sit on the toilet and reach for the loaf of bread."
+	print "The loaf of bread bites your hand. It's bite feels very gum-ey"
+	print "You start to feel drowsy..."
+	pause 2000
+	print "Everything goes black..."
+	interaction ""
+	dungeon
+}
+
+function breakFree(){
+	wipe
+	print "You tug the manacles on your wrist, which promptly fall away."
+	print "They seem to have been held together by a sticky dough."
+	print "You stand up."
+	interaction ""
+	wipe
+	doors
+}
+
+function screamForHelp(){
+	wipe
+	print "You scream for help, attracting the attention of your jailor: a loaf of bread the size of a housecat."
+	print "It tells you to shut up."
+	print "what do you do?"
+	print "1. Shut up."
+	print "2. Eat the loaf of bread."
+	print "3. Continue screaming."
+	let input = read
+	if == input "1" {shutUp}
+	else {if == input "2" {eatJailor}
+	else {if == input "3" {
+		wipe
+		print "You continue screaming. Your jailor (the loaf of bread) tells you to shut up again."
+		print "You ignore it, and scream even louder than before."
+		print "The loaf of bread lunges into your mouth, choking you to death."
+		interaction ""
+		print "You died."
+		pause 1500
+		print "The End."
+		pause 1500
+		print "Go away."
+		pause 1500
+		interaction "true"
+	}}
+	}
+
+}
+
+function eatJailor(){
+	wipe
+	print "You lunge at your jailor, causing your manacles to fall off."
+	print "You manage to cram half the loaf into your mouth, causing it's crust to be damaged by your saliva."
+	print "The loaf screams and flails around, trying to escape your mouth,"
+	print "you bite down on it, causing it to scream louder, and flain harder."
+	interaction ""
+	print "The loaf of bread finally goes silent."
+	pause 2000
+	print "You spit it out."
+	interaction ""
+	doors
+}
+
+function doors(){
+	print "There are two doors. One leads to the exit."
+	print "Which one do you go through?"
+	print "1. Door 1"
+	print "2. Door 2"
+	let input = read
+	if == input "1" {
+		wipe
+		print "You go through the first door, where you interrupt a congregation of bread loaves preparing for your sacrifice"
+		print "The loaves of bread all jump on you and devour you."
+		print "You die."
+		pause 1500
+		"The end."
+		pause 1500
+		"Go home."
+		pause 1500
+		"Live a life."
+		interaction "true"
+	}
+	else {if == input "2"{
+		wipe
+		print "You go through the second door, which is the exit of the dungeon."
+		print "You appear on a toilet, in the middle of a road."
+		print "Dazed, you stumble to your home to your bed, and dream of a man with a stone from the side of a wall..."
+		print "The End"
+		interaction "true"
+
+	}}
+}
+
+function shutUp(){
+	wipe
+	print "You shut up."
+	print "The loaf, satisfied, somehow nods to you, and goes back to it's breadbox."
+	interaction ""
+	dungeon
+	
+}
+
+function cry(){
+	wipe
+	print "You start sobbing, which attracts the attention of your jailor (a loaf of bread)"
+	print "The loaf tells you to be quiet."
+	print "What do you do?"
+	print "1. Kill the loaf."
+	print "2. Kill the loaf."
+	print "3. Run and try to escape."
+	let input = read
+	if == input "1" {eatJailor}
+	else {if == input "2" {eatJailor}
+	else {if == input "3" {
+		wipe
+		print "You run to one of the doors, trying to escape."
+		print "The loaf farts a lazer at you, and you turn into a loaf of bread."
+		print "You became a loaf of bread."
+		print "The End."
+		interaction "true"
+
+	}}
+	}
+}
+
+function takeADump(){
+	wipe
+	print "You sit on the toilet, in the middle of the road, and take a dump."
+	print "After a few minutes, you are done doing your buisness."
+	print "You stand up, flush, and continue on with your life."
+	interaction "true"
+}
+function flushLoaf(){
+	wipe
+	print "You stuff the loaf into the toilet, and flush."
+	print "The loaf dissappears without even going down the hole."
+	print "A stone hits you in the back of your head."
+	print "Everything goes black..."
+	interaction ""
+	dungeon
+
+}
+
+function dungeon(){
+	wipe
+	print "You wake up in a dungeon..."
+	print "There are globs of dough, and human meat everywhere."
+	print "You are chained to a wall..."
+	pause 2000
+	print "What do you do?"
+	print "1. Try to break free from the chains."
+	print "2. Scream for help."
+	print "3. Cry silently and accept that you are never going to escape."
+	let input = read
+	if == input "1" {breakFree}
+	else {if == input "2" {screamForHelp}
+	else {if == input "3" {cry}}
+	}
+}
+
+begin

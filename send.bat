@@ -1,0 +1,19 @@
+curl ^"https://studio.code.org/v3/netsim/ns-58de4361fa8db2406eb2e524276bf7f7_6013031/m^" ^
+  -H ^"accept: */*^" ^
+  -H ^"accept-language: en-US,en;q=0.9^" ^
+  -H ^"content-type: application/json; charset=UTF-8^" ^
+  -b ^"AMP_MKTG_f6db63e17b=JTdCJTdE; language_=en-US; _limit_project_types=false; _user_type=student; _shortName=Hannah; _experiments=^%^5B^%^22rene-control-control^%^22^%^2C^%^22resources-tab^%^22^%^2C^%^22resources_tab^%^22^%^2C^%^22chevron-publish-v2^%^22^%^2C^%^22teacher-dashboard-section-buttons^%^22^%^2C^%^22teacher-dashboard-section-buttons-alternate-text^%^22^%^2C^%^22ai-differentiation^%^22^%^2C^%^22ai-diff-levels^%^22^%^5D; _learn_session=add3f69bf5626b3e8a2b6603dc814d98; AMP_f6db63e17b=JTdCJTIyb3B0T3V0JTIyJTNBZmFsc2UlMkMlMjJkZXZpY2VJZCUyMiUzQSUyMmU5ZDAzMDY4LTBkYzYtNDY3Ni04NjljLWNhYzM3ZDI3NzhmZSUyMiUyQyUyMmxhc3RFdmVudFRpbWUlM0ExNzU3NjE1MjQ0MjY0JTJDJTIyc2Vzc2lvbklkJTIyJTNBMTc1NzYxNTIzMTU4NyUyQyUyMnVzZXJJZCUyMiUzQSUyMjEzMDIyMjAwNSUyMiU3RA==; OptanonConsent=isGpcEnabled=0^&datestamp=Thu+Sep+11+2025+13^%^3A27^%^3A24+GMT-0500+(Central+Daylight+Time)^&version=202505.1.0^&browserGpcFlag=0^&isIABGlobal=false^&hosts=^&consentId=23bb4502-f5a4-4e3a-9b52-fe7f16565a90^&interactionCount=1^&isAnonUser=1^&landingPath=NotLandingPage^&groups=C0001^%^3A1^%^2CC0002^%^3A1^%^2CC0003^%^3A1^%^2CC0004^%^3A0^%^2CC0008^%^3A1^%^2CC0012^%^3A0^&AwaitingReconsent=false; AWSALB=oGTvaOJ41iKDBdOgONhLRFsxyVFQWV0ZnxmBongDsvY0TtofqJKMRT0yzuNSvnrM4TkGNksrQNXBzF10udhhsxw69Wj8AlHUhFy++Tb6iJ4V4NrBNeiavyqmYovi; AWSALBCORS=oGTvaOJ41iKDBdOgONhLRFsxyVFQWV0ZnxmBongDsvY0TtofqJKMRT0yzuNSvnrM4TkGNksrQNXBzF10udhhsxw69Wj8AlHUhFy++Tb6iJ4V4NrBNeiavyqmYovi^" ^
+  -H ^"dnt: 1^" ^
+  -H ^"origin: https://studio.code.org^" ^
+  -H ^"priority: u=1, i^" ^
+  -H ^"referer: https://studio.code.org/courses/csp-2025/units/2/lessons/4/levels/1^" ^
+  -H ^"sec-ch-ua: ^\^"Chromium^\^";v=^\^"140^\^", ^\^"Not=A?Brand^\^";v=^\^"24^\^", ^\^"Google Chrome^\^";v=^\^"140^\^"^" ^
+  -H ^"sec-ch-ua-mobile: ?0^" ^
+  -H ^"sec-ch-ua-platform: ^\^"Windows^\^"^" ^
+  -H ^"sec-fetch-dest: empty^" ^
+  -H ^"sec-fetch-mode: cors^" ^
+  -H ^"sec-fetch-site: same-origin^" ^
+  -H ^"user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36^" ^
+  -H ^"x-newrelic-id: UQYGVVBQGwAHXFZRAQU=^" ^
+  -H ^"x-requested-with: XMLHttpRequest^" ^
+  --data-raw ^"^{^\^"nodeID^\^":13,^\^"base64Binary^\^":^{^\^"string^\^":^\^"SEVZIEJBQlk=^\^",^\^"len^\^":64^},^\^"status^\^":^\^"success^\^",^\^"timestamp^\^":1757615280647,^\^"sentBy^\^":^\^"Hannah^\^"}^"
